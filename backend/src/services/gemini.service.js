@@ -33,7 +33,6 @@ export class GeminiService {
 
   // Asyncron Method which receive image converted in Base64.
   async identifyPlant(imagePart) {
-    // TODO: Implement AI call.
     // Create the prompt for Gemini.
     const prompt = "Act as an expert botanist. Identify this plant and provide the details strictly following the JSON schema.";
     
