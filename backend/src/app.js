@@ -109,8 +109,8 @@ class ApplicationServer {
     const requiredVariables = ['PORT', 'ALLOWED_ORIGIN', 'GEMINI_API_KEY'];
 
     // Filter and collect names of variables that fail validation
-    const missingVariables = requiredVariables.filter((variable_name) => {
-        const value = process.env[variable_name];
+    const missingVariables = requiredVariables.filter((variableName) => {
+        const value = process.env[variableName];
         return !isEnvironmentVariableValid(value);
     })
 
