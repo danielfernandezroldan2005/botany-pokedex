@@ -4,6 +4,8 @@ import dotenv from 'dotenv';
 import express from 'express';
 // CORS middleware to manage cross-origin resource sharing from the frontend client
 import cors from 'cors';
+// Import endpoints of the routes JSON file.
+import { plantRouter } from './routes/plant.routes.js';
 
 // Initialize environment configuration immediately on process launch
 dotenv.config();
@@ -72,6 +74,9 @@ class ApplicationServer {
             uptimeSeconds: Math.floor(process.uptime())
         });
     });
+
+    // Endpoint (POST) for sending image to the AI.
+    this.app.use('/api/v1/plants', plantRouter);
   }
 
   /**
