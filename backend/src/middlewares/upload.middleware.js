@@ -6,7 +6,6 @@ const memoryStorage = multer.memoryStorage();
 
 // 2. Define the file filter function (EXERCISE)
 const imageFileFilter = (request, file, callback) => {
-  // TODO: Implement logic here
   // Define formats for the valid images.
   const allowedMimeTypes = ['image/jpeg', 'image/png', 'image/webp']
   // Check if the format of our image is valid using .includes().
