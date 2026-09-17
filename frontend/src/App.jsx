@@ -1,122 +1,82 @@
-import { useState } from 'react'
-import heroImg from './assets/hero.png'
-import reactLogo from './assets/react.svg'
-import viteLogo from './assets/vite.svg'
-import './App.css'
+import { useState } from 'react';
 
 function App() {
-  const [count, setCount] = useState(0)
+  // Save the foto that user selects.
+  const[file, setFile] = useState(null);
 
-  return (
-    <>
-      <section id="center">
-        <div className="hero">
-          <img src={heroImg} className="base" width="170" height="179" alt="" />
-          <img src={reactLogo} className="framework" alt="React logo" />
-          <img src={viteLogo} className="vite" alt="Vite logo" />
-        </div>
-        <div>
-          <h1>Get started</h1>
-          <p>
-            Edit <code>src/App.jsx</code> and save to test <code>HMR</code>
-          </p>
-        </div>
-        <button
-          type="button"
-          className="counter"
-          onClick={() => setCount((count) => count + 1)}
+  // Save JSON return by backend.
+  const[result, setResult] = useState(null);
+
+  // Boolean to know if AI is processing an image.
+  const[loading, setLoading] = useState(null);
+
+  const handleSubmit = async(e) => {
+    // Avoid reloading the page when user push de button.
+    e.preventDefault();
+    // If any image is load, we abort the function.
+    if(!file) return;
+
+    // Activate the loading state.
+    setLoading(true);
+    // Clean results of other searches.
+    setResult(null);
+
+    // Prepare image using FormData (important for sending binary files).
+    const formData = new FormData();
+    formData.append('plantImage', file);
+
+    try {
+      // Make HTTP call for our Express server using the port 3000.
+      const response = await fetch('http://localhost:3000/api/v1/plants/identify', { 
+        method: 'POST',
+        body: formData,
+      });
+      const data = await response.json();
+    
+      // Save Google's JSON in our state.
+      setResult(data);
+    } catch(error) {
+      console.error("Error connecting to the backend: ", error);
+      setResult({ error: "Fail connection with the server."});
+    } finally {
+      // Switch off the loading state in all cases (correct or error).
+      setLoading(false);
+    }
+  };
+
+    return (
+    <div style={{ maxWidth: '600px', margin: '0 auto', padding: '2rem', fontFamily: 'system-ui' }}>
+      <h1 style={{ textAlign: 'center' }}>🌱 Botany Pokédex</h1>
+      
+      <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+        {/* When a file is selected, we trigger the onChange event and save the image in the 'file' state */}
+        <input 
+          type="file" 
+          accept="image/*" 
+          onChange={(e) => setFile(e.target.files[0])} 
+        />
+        
+        {/* The button is disabled if there is no file or if it's loading */}
+        <button 
+          type="submit" 
+          disabled={!file || loading}
+          style={{ padding: '0.8rem', fontSize: '1.1rem', cursor: 'pointer' }}
         >
-          Count is {count}
+          {loading ? 'Analyzing with Gemini...' : 'Identify Plant'}
         </button>
-      </section>
+      </form>
 
-      <div className="ticks"></div>
-
-      <section id="next-steps">
-        <div id="docs">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#documentation-icon"></use>
-          </svg>
-          <h2>Documentation</h2>
-          <p>Your questions, answered</p>
-          <ul>
-            <li>
-              <a href="https://vite.dev/" target="_blank">
-                <img className="logo" src={viteLogo} alt="" />
-                Explore Vite
-              </a>
-            </li>
-            <li>
-              <a href="https://react.dev/" target="_blank">
-                <img className="button-icon" src={reactLogo} alt="" />
-                Learn more
-              </a>
-            </li>
-          </ul>
+      {/* Conditional rendering: If the 'result' variable has data, we show this green box */}
+      {result && (
+        <div style={{ marginTop: '2rem' }}>
+          <h2>Result:</h2>
+          <pre style={{ backgroundColor: '#1a1a1a', color: '#00ff00', padding: '1rem', borderRadius: '8px', overflowX: 'auto' }}>
+            {JSON.stringify(result, null, 2)}
+          </pre>
         </div>
-        <div id="social">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#social-icon"></use>
-          </svg>
-          <h2>Connect with us</h2>
-          <p>Join the Vite community</p>
-          <ul>
-            <li>
-              <a href="https://github.com/vitejs/vite" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#github-icon"></use>
-                </svg>
-                GitHub
-              </a>
-            </li>
-            <li>
-              <a href="https://chat.vite.dev/" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#discord-icon"></use>
-                </svg>
-                Discord
-              </a>
-            </li>
-            <li>
-              <a href="https://x.com/vite_js" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#x-icon"></use>
-                </svg>
-                X.com
-              </a>
-            </li>
-            <li>
-              <a href="https://bsky.app/profile/vite.dev" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#bluesky-icon"></use>
-                </svg>
-                Bluesky
-              </a>
-            </li>
-          </ul>
-        </div>
-      </section>
-
-      <div className="ticks"></div>
-      <section id="spacer"></section>
-    </>
-  )
+      )}
+    </div>
+  );
 }
 
-export default App
+export default App;
