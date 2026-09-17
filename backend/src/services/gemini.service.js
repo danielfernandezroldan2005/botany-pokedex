@@ -39,12 +39,14 @@ export class GeminiService {
     
     // Initialize the Model.
     const model = this.ai.getGenerativeModel({
-      model: "gemini-1.5-flash", // Fastest visual model.
+      model: "gemini-3.5-flash", // Fastest visual model.
       generationConfig: { // Inject our schema to force a JSON output.
         responseMimeType: "application/json", // Type of the response.
         responseSchema: plantPokedexSchema // Inject structure of the JSON.
       }
     });
+
+    console.log("Validating image before sending:", imagePart?.inlineData?.mimeType);
 
     // Generate the content.
     // Send an array containing both the text prompt and the image part.
