@@ -41,7 +41,7 @@ class ApplicationServer {
   setupMiddlewares() {
     // Enable cross-origin resource access according to environment policy
     this.app.use(cors({
-      origin: process.env.ALLOWED_ORIGIN || '*',
+      origin: process.env.ALLOWED_ORIGIN || 'http://localhost:5173',
       methods: ['GET', 'POST', 'OPTIONS'],
       allowedHeaders: ['Content-Type', 'Authorization']
     }));
