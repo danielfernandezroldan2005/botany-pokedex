@@ -28,6 +28,7 @@ export class GeminiService {
   constructor() {
     // Instantiate Google library sending our environment variable.
     // Saved in process.env
+    console.log("🔑 Reading Key:", process.env.GEMINI_API_KEY);
     this.ai = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
   }
 

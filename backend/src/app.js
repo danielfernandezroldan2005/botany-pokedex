@@ -1,3 +1,5 @@
+// Import variable lector.
+import 'dotenv/config';
 // Load environment variables from the root .env file
 import dotenv from 'dotenv';
 // Core Express framework for handling HTTP routing and middleware pipelines
