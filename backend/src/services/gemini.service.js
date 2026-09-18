@@ -40,7 +40,7 @@ export class GeminiService {
     
     // Initialize the Model.
     const model = this.ai.getGenerativeModel({
-      model: "gemini-3.8-flash", // Fastest visual model.
+      model: "gemini-3.8-flash", // Fast visual model.
       generationConfig: { // Inject our schema to force a JSON output.
         responseMimeType: "application/json", // Type of the response.
         responseSchema: plantPokedexSchema // Inject structure of the JSON.

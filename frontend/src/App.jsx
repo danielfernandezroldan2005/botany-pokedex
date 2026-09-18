@@ -101,6 +101,23 @@ function App() {
           capture="environment"
           onChange={handleFileChange} 
         />
+
+        {/* --- IMAGE PREVIEW SECTION --- */}
+        {selectedFile && (
+          <div style={{ textAlign: 'center', margin: '1rem 0' }}>
+            <p style={{ fontSize: '0.8rem', color: '#666', marginBottom: '0.5rem' }}>
+              Selected Specimen:
+            </p>
+            
+            { /* Plant Image Preview */ }
+            <img 
+              src={URL.createObjectURL(selectedFile)}
+              alt="Plant Preview"
+              style={{ width: '100%', maxHeight: '300px', objectFit: 'cover', borderRadius: '8px' }}
+            />
+            
+          </div>
+        )}
         
         {/* The Smart Button: disabled if no file OR if currently loading */}
         <button 
