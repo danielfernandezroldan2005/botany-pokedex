@@ -40,20 +40,21 @@ function App() {
     formData.append('plantImage', selectedFile);
 
     // --- TEMPORARY MOCK FOR UI DEVELOPMENT ---
-    // We use setTimeout to simulate network delay (1.5 seconds)
     setTimeout(() => {
-      // Inject fake data directly into our state
       setPlantData({
         commonName: "Monstera (Simulated)",
         scientificName: "Monstera deliciosa",
+        family: "Araceae",                                      
+        location: "Tropical rainforests of Central America",    
+        isToxicToPets: true,                                    
         description: "A popular houseplant known for its natural leaf holes.",
         careInstructions: {
           light: "Bright indirect sunlight.",
-          water: "Water every 1-2 weeks, allowing soil to dry out between waterings.",
+          water: "Water every 1-2 weeks...",
           soil: "Well-draining potting mix."
         }
       });
-      setIsLoading(false); // Turn off the loading spinner
+      setIsLoading(false);
     }, 1500);
 
     /* --- REAL NETWORK CALL (COMMENTED OUT TEMPORARILY) ---
