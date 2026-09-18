@@ -8,6 +8,7 @@ const plantPokedexSchema = {
     scientificName: { type: SchemaType.STRING, description: "Scientific taxonomical name" },
     family: { type: SchemaType.STRING, description: "Botanical family" },
     description: { type: SchemaType.STRING, description: "A short, engaging description (max 2 sentences)" },
+    location: { type: SchemaType.STRING, description: "Native region or typical geographical location" },
     careInstructions: {
       type: SchemaType.OBJECT,
       properties: {
@@ -18,7 +19,7 @@ const plantPokedexSchema = {
     },
     isToxicToPets: { type: SchemaType.BOOLEAN, description: "True if toxic to dogs/cats or birds" }
   },
-  required: ["commonName", "scientificName", "family", "description", "careInstructions", "isToxicToPets"]
+  required: ["commonName", "scientificName", "family", "location", "description", "careInstructions", "isToxicToPets"]
 };
 
 // Export class for instancing in other files.
