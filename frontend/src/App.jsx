@@ -14,7 +14,7 @@ function App() {
   // State to handle any potential error messages.
   const[errorMessage, setErrorMessage] = useState(null);
 
-  // --- HANDLES ---
+  // --- HANDLERS ---
   // Handler triggered when the user selects a file from their device.
   const handleFileChange = (event) => {
     // Grab the first file for the input list.
@@ -83,7 +83,14 @@ function App() {
     }
   };
 
+  // Handler to clear the current session and start over.
+  const handleReset = () => {
+    setSelectedFile(null);
+    setPlantData(null);
+    setErrorMessage(null);
+  }
 
+  // --- RETURN VISUAL PART ---
   return (
     <div style={{ maxWidth: '500px', margin: '0 auto', padding: '2rem', fontFamily: 'sans-serif' }}>
       
@@ -204,6 +211,22 @@ function App() {
             </ul>
           </div>
       
+          {/* Added Reset Button. */}
+          <div style={{ marginTop: '2rem', textAlign: 'center' }}>
+            <button 
+              onClick={handleReset} 
+              style={{ 
+                padding: '0.6rem 1.2rem', 
+                backgroundColor: '#fff', 
+                color: '#2e7d32', 
+                border: '1px solid #2e7d32', 
+                borderRadius: '8px', 
+                cursor: 'pointer' 
+              }}
+            >
+              Scan Another Plant
+            </button>
+          </div>
         </div>
       )}
       
