@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 
 function App() {
   // --- STATES ---
@@ -13,6 +13,10 @@ function App() {
 
   // State to handle any potential error messages.
   const[errorMessage, setErrorMessage] = useState(null);
+
+  // --- REFS ---
+  // A direct reference to the HTML input element.
+  const fileInputRef = useRef(null);
 
   // --- HANDLERS ---
   // Handler triggered when the user selects a file from their device.
@@ -88,7 +92,12 @@ function App() {
     setSelectedFile(null);
     setPlantData(null);
     setErrorMessage(null);
-  }
+
+    // Forcefully clear the browser's real HTML input.
+    if (fileInputRef.current) {
+      fileInputRef.current.value = '';
+    }
+  };
 
   // --- RETURN VISUAL PART ---
   return (
@@ -107,6 +116,8 @@ function App() {
           accept="image/*" 
           capture="environment"
           onChange={handleFileChange} 
+          // Connect the "controller" here.
+          ref={fileInputRef}
         />
 
         {/* --- IMAGE PREVIEW SECTION --- */}
