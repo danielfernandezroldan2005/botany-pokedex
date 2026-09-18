@@ -145,6 +145,25 @@ function App() {
             {JSON.stringify(plantData, null, 2)}
           </pre>
 
+          {/* --- TAXONOMY & ORIGIN --- */}
+          <div style={{ marginBottom: '1.5rem', fontSize: '0.9rem', color: '#555' }}>
+            
+            {/* Render the family and location */}
+            <p style={{ margin: '0 0 0.3rem 0' }}><strong>Family:</strong> {plantData.family} </p>
+            <p style={{ margin: '0 0 0.3rem 0' }}><strong>Origin:</strong> {plantData.location} </p>
+            
+            {/* Toxicity Badge (Ternary Operator) */}
+            {/* HINT: Use plantData.isToxicToPets ? '...toxic UI...' : '...safe UI...' */}
+            <p style={{ margin: 0 }}>
+              <strong>Pet Safety: </strong> 
+              {plantData.isToxicToPets ? (
+                <span style={{ color: '#c62828', fontWeight: 'bold' }}>⚠️ Toxic</span>
+              ) : (
+                <span style={{ color: '#2e7d32', fontWeight: 'bold' }}>✅ Safe for pets</span>
+              )}
+            </p>
+          </div>
+
           {/* --- DESCRIPTION & CARE --- */}
           <div style={{ marginTop: '1rem', borderTop: '1px solid #eee', paddingTop: '0.75rem' }}>
             <h4 style={{ margin: '0 0 0.5rem 0', color: '#333' }}>Description</h4>
@@ -152,7 +171,6 @@ function App() {
             {/* Render the plant description here */}
             <p style={{ margin: 0, color: '#444', lineHeight: '1.5' }}>
               {plantData.description}
-              ...
             </p>
           </div>
 
@@ -160,10 +178,10 @@ function App() {
             <h4 style={{ margin: '0 0 0.5rem 0', color: '#333' }}>Care Instructions</h4>
             <ul style={{ paddingLeft: '1.2rem', margin: 0, lineHeight: '1.6', color: '#444' }}>
               
-              {/* Render light, water, and soil using optional chaining (?.) */}
-              <li>☀️ <strong>Light:</strong> plantData.light </li>
-              <li>💧 <strong>Water:</strong> plantData.water </li>
-              <li>🌱 <strong>Soil:</strong> plantData.soil </li>
+              {/* Render light, water, and soil navigating through the nested object */}
+              <li>☀️ <strong>Light:</strong> {plantData.careInstructions?.light || 'Data not available'} </li>
+              <li>💧 <strong>Water:</strong> {plantData.careInstructions?.water || 'Data not available'} </li>
+              <li>🌱 <strong>Soil:</strong> {plantData.careInstructions?.soil || 'Data not available'} </li>
               
             </ul>
           </div>
