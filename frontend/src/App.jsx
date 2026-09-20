@@ -50,12 +50,12 @@ function App() {
         scientificName: "Monstera deliciosa",
         family: "Araceae",                                      
         location: "Tropical rainforests of Central America",    
-        isToxicToPets: true,                                    
+        isToxicToPets: true, // Perfect for testing the warning badge                          
         description: "A popular houseplant known for its natural leaf holes.",
         careInstructions: {
           light: "Bright indirect sunlight.",
-          water: "Water every 1-2 weeks...",
-          soil: "Well-draining potting mix."
+          water: "Water every 1-2 weeks..."
+          // Note: Soil is optional, we'll test optional chaining here.       
         }
       });
       setIsLoading(false);
@@ -175,11 +175,6 @@ function App() {
           <h3 style={{ color: '#555', fontWeight: 'normal', margin: '0 0 1rem 0' }}>
             <em>{plantData.scientificName}</em>
           </h3>      
-
-          {/* Temporary debugger to see what Gemini actually sends */}
-          <pre style={{ backgroundColor: '#eee', padding: '1rem', fontSize: '12px', overflowX: 'auto' }}>
-            {JSON.stringify(plantData, null, 2)}
-          </pre>
 
           {/* --- TAXONOMY & ORIGIN --- */}
           <div style={{ marginBottom: '1.5rem', fontSize: '0.9rem', color: '#555' }}>
