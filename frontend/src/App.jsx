@@ -44,7 +44,7 @@ function App() {
     formData.append('plantImage', selectedFile);
 
     // --- TEMPORARY MOCK FOR UI DEVELOPMENT ---
-    setTimeout(() => {
+    /* setTimeout(() => {
       setPlantData({
         commonName: "Monstera (Simulated)",
         scientificName: "Monstera deliciosa",
@@ -59,10 +59,10 @@ function App() {
         }
       });
       setIsLoading(false);
-    }, 1500);
+    }, 1500); */
 
     // --- REAL NETWORK CALL ---
-    /* try {
+    try {
       // Send POST request carrying the binary formData.
       const response = await fetch('http://localhost:3000/api/v1/plants/identify', {
         method: 'POST',
@@ -84,7 +84,7 @@ function App() {
     } finally {
       // Always restore the loading state to allow new submissions
       setIsLoading(false);
-    } */
+    }
   };
 
   // Handler to clear the current session and start over.
