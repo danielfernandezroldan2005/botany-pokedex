@@ -250,6 +250,35 @@ function App() {
         </div>
       )}
       
+      {/* --- HISTORY GALLERY SECTION --- */}
+      {pokedexHistory.length > 0 && (
+        <div style={{ marginTop: '3rem', borderTop: '2px dashed #c8e6c9', paddingTop: '2rem' }}>
+          
+          <h3 style={{ color: '#2e7d32', textAlign: 'center', marginBottom: '1.5rem' }}>
+            📚 My Pokédex ({pokedexHistory.length})
+          </h3>
+          
+          {/* CSS Grid for a responsive gallery */}
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(150px, 1fr))', gap: '1rem' }}>
+            
+            {/* Loop through the history array and draw a mini-card for each plant */}
+            {pokedexHistory.map((plant) => (
+              <div key={plant.id} style={{ border: '1px solid #eee', borderRadius: '8px', padding: '1rem', backgroundColor: '#fafafa', textAlign: 'center', boxShadow: '0 2px 4px rgba(0,0,0,0.05)' }}>
+                <div style={{ fontSize: '2rem', marginBottom: '0.5rem' }}>🌿</div>
+                <h5 style={{ margin: '0 0 0.25rem 0', color: '#1b5e20' }}>{plant.commonName}</h5>
+                <p style={{ margin: 0, fontSize: '0.75rem', color: '#666', fontStyle: 'italic' }}>
+                  {plant.scientificName}
+                </p>
+                {/* Visual indicator for pet safety in the mini card */}
+                <div style={{ marginTop: '0.5rem', fontSize: '0.75rem' }}>
+                  {plant.isToxicToPets ? '⚠️ Toxic' : '✅ Safe'}
+                </div>
+              </div>
+            ))}
+            
+          </div>
+        </div>
+      )}
     </div>
   );
 }
