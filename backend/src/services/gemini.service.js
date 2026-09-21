@@ -36,12 +36,13 @@ export class GeminiService {
   // Asyncron Method which receive image converted in Base64.
   async identifyPlant(imagePart) {
     // Define our resilient fallback list of models
-    const fallbackModels = [
-      "gemini-1.5-flash", // Fast, standard vision model
-      "gemini-2.5-flash", // Newer standard model
-      "gemini-1.5-pro",    // Slower but highly capable, usually on different servers
-      "gemini-3.8-flash", // A few more if any necessity.
-      "gemini-3.5-flash"
+    const fallbackModels = [ // Solutionate errors.
+      "gemini-1.5-flash-8b",
+      "gemini-1.5-flash",
+      "gemini-1.5-pro",
+      "gemini-3.5-flash",
+      "gemini-3.8-flash",
+      "gemini-2.5-flash"
     ];
 
     // Create the prompt for Gemini.
