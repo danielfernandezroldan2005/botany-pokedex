@@ -14,6 +14,9 @@ function App() {
   // State to handle any potential error messages.
   const[errorMessage, setErrorMessage] = useState(null);
 
+  // State to save the history of the photos uploaded to the application.
+  const[pokedexHistory, setPokedexHistory] = useState([]);
+
   // --- REFS ---
   // A direct reference to the HTML input element.
   const fileInputRef = useRef(null);
@@ -45,7 +48,8 @@ function App() {
 
     // --- TEMPORARY MOCK FOR UI DEVELOPMENT ---
     setTimeout(() => {
-      setPlantData({
+      const newPlant = {
+        id: Date.now(), // Added date as id.
         commonName: "Monstera (Simulated)",
         scientificName: "Monstera deliciosa",
         family: "Araceae",                                      
@@ -57,7 +61,14 @@ function App() {
           water: "Water every 1-2 weeks..."
           // Note: Soil is optional, we'll test optional chaining here.       
         }
-      });
+      };
+
+      // Show plant in the main part.
+      setPlantData(newPlant);
+
+      // Add new plant in the first part of our history.
+      setPokedexHistory((prevHistory) => [newPlant, ...prevHistory]);
+      
       setIsLoading(false);
     }, 1500);
 
