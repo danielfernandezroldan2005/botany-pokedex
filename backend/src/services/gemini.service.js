@@ -35,30 +35,51 @@ export class GeminiService {
 
   // Asyncron Method which receive image converted in Base64.
   async identifyPlant(imagePart) {
+    // Define our resilient fallback list of models
+    const fallbackModels = [
+      "gemini-1.5-flash", // Fast, standard vision model
+      "gemini-2.5-flash", // Newer standard model
+      "gemini-1.5-pro",    // Slower but highly capable, usually on different servers
+      "gemini-3.8-flash", // A few more if any necessity.
+      "gemini-3.5-flash"
+    ];
+
     // Create the prompt for Gemini.
-    const prompt = "Act as an expert botanist. Identify this plant and provide the details strictly following the JSON schema.";
+    const prompt = "Analyze this plant image and provide the exact botanical data requested in the JSON schema.";
     
-    // Initialize the Model.
-    const model = this.ai.getGenerativeModel({
-      model: "gemini-3.8-flash", // Fast visual model.
-      generationConfig: { // Inject our schema to force a JSON output.
-        responseMimeType: "application/json", // Type of the response.
-        responseSchema: plantPokedexSchema // Inject structure of the JSON.
+    // Iterate with each model.
+    for (const modelName of fallbackModels) {
+      try {
+        console.log(`[Gemini] Attempting connection with model: ${modelName}...`);
+
+        const model = this.ai.getGenerativeModel({
+          model: modelName,
+          generationConfig: {
+            responseMimeType: "application/json",
+            responseSchema: plantPokedexSchema // This must match the variable name of your schema
+          }
+        });
+
+        // Make the actual call to Google's servers
+        const result = await model.generateContent([prompt, imagePart]);
+        console.log(`[Gemini] ✅ Success using ${modelName}!`);
+
+        return result.response.text(); // Return the raw JSON string to your controller
+
+      } catch (error) {
+        // If Google throws 503 or 404, we catch it here
+        console.warn(`[Gemini] ⚠️ ${modelName} failed with: ${error.statusText || error.message}`);
+
+        // If this was the last model in our list, we have no more options. Throw to the frontend.
+        if (modelName === fallbackModels[fallbackModels.length - 1]) {
+          console.error("[Gemini] ❌ Critical: All fallback models are currently unavailable.");
+          throw error;
+        }
+
+        // Wait 1.5 seconds before trying the next model to avoid hitting strict rate limits
+        console.log("[Gemini] Switching to the next fallback model...");
+        await new Promise(resolve => setTimeout(resolve, 1500));
       }
-    });
-
-    console.log("Validating image before sending:", imagePart?.inlineData?.mimeType);
-
-    // Generate the content.
-    // Send an array containing both the text prompt and the image part.
-    // Remember to use 'await' because this calls the internet.
-    const result = await model.generateContent([prompt, imagePart]);
-
-    // Parse and return.
-    // Extract the raw text string from the response.
-    const rawText = result.response.text()
-
-    // Convert that JSON string into a usable JavaScript object and return it.
-    return JSON.parse(rawText);
+    }
   }
 };
