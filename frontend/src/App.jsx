@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 
 function App() {
   // --- STATES ---
@@ -14,10 +14,21 @@ function App() {
   // State to handle any potential error messages.
   const[errorMessage, setErrorMessage] = useState(null);
 
-  // State to save the history of the photos uploaded to the application.
-  const[pokedexHistory, setPokedexHistory] = useState([]);
+  // State to store the history (Read from phone memory if it exists).
+  const [pokedexHistory, setPokedexHistory] = useState(() => {
+    const savedData = localStorage.getItem('myLocalPokedex');
+    if (savedData) {
+      return JSON.parse(savedData); // Reload save data.
+    }
+    return []; // Start with empty array.
+  });
 
   // --- REFS ---
+  // Auto-save history to localStorage whenever it changes
+  useEffect(() => {
+    localStorage.setItem('miPokedexLocal', JSON.stringify(pokedexHistory));
+  }, [pokedexHistory]);
+
   // A direct reference to the HTML input element.
   const fileInputRef = useRef(null);
 
