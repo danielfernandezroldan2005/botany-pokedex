@@ -1,10 +1,10 @@
 import { Router } from 'express';
 import { imageUploadMiddleware } from '../middlewares/upload.middleware.js';
 import { fileToGenerativePart } from '../utils/image.util.js';
-import { GeminiService } from '../services/gemini.service.js';
+import { PlantIdService } from './plantid.service.js';
 
 export const plantRouter = Router();
-const aiService = new GeminiService(); // Instantiate our service.
+const aiService = new PlantIdService(); // Instantiate service
 
 // POST endpoint to identify a plant from an uploaded image
 plantRouter.post('/identify', imageUploadMiddleware.single('plantImage'), async (request, response) => {
