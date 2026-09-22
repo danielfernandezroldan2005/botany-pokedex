@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import { imageUploadMiddleware } from '../middlewares/upload.middleware.js';
 import { fileToGenerativePart } from '../utils/image.util.js';
-import { PlantIdService } from './plantid.service.js';
+import { PlantIdService } from '../services/plantid.service.js';
 
 export const plantRouter = Router();
 const aiService = new PlantIdService(); // Instantiate service
@@ -24,7 +24,7 @@ plantRouter.post('/identify', imageUploadMiddleware.single('plantImage'), async 
     return response.status(200).json(plantData);
   } catch(error) {
     // Log the actual error in the server console for the developer to see.
-    console.error("[GEMINI API ERROR]: ", error);
+    console.error("[API ERROR]: ", error);
 
     // Return a 500 Internal Server Error to the client.
     return response.status(500).json({ 

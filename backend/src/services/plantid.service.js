@@ -1,17 +1,39 @@
 export class PlantIdService {
   constructor() {
     this.apiKey = process.env.PLANTID_API_KEY;
-    // Endpoint updated to version 3
     this.apiUrl = 'https://plant.id/api/v3/identification'; 
   }
 
-  async identifyPlant(base64Image) {
-    console.log("[Plant.id V3] Starting botanical identification...");
+  async identifyPlant(imageInput) {
+    console.log("[Plant.id V3] 🔍 Processing adapted image...");
 
-    // Remove the Base64 header if it comes from the frontend
-    const base64Data = base64Image.replace(/^data:image\/\w+;base64,/, '');
+    let base64Data = "";
 
-    // Request body adjusted for v3
+    if (!imageInput) {
+      throw new Error("No image input provided to Plant.id service.");
+    }
+
+    // 1. If it comes with the Gemini structure (inlineData)
+    if (imageInput.inlineData && imageInput.inlineData.data) {
+      base64Data = imageInput.inlineData.data;
+    } 
+    // 2. If it is directly a Multer binary Buffer
+    else if (Buffer.isBuffer(imageInput)) {
+      base64Data = imageInput.toString('base64');
+    } 
+    // 3. If it is a String (plain Base64)
+    else if (typeof imageInput === 'string') {
+      base64Data = imageInput.replace(/^data:image\/\w+;base64,/, '');
+    }
+    // 4. If it is the classic req.file object with buffer
+    else if (imageInput.buffer && Buffer.isBuffer(imageInput.buffer)) {
+      base64Data = imageInput.buffer.toString('base64');
+    }
+
+    if (!base64Data) {
+      throw new Error("Image Format not supported in Plant.id service.");
+    }
+
     const requestBody = {
       images: [base64Data],
       similar_images: true
@@ -34,7 +56,6 @@ export class PlantIdService {
       const data = await response.json();
       console.log("[Plant.id V3] ✅ Identification successful!");
 
-      // 🛠️ THE V3 ADAPTER: The data path changes in this version
       const bestMatch = data.result?.classification?.suggestions?.[0];
       
       if (!bestMatch) {
@@ -43,7 +64,6 @@ export class PlantIdService {
 
       const details = bestMatch.details || {};
 
-      // We translate this into the exact format your React frontend expects
       return JSON.stringify({
         commonName: details.common_names ? details.common_names[0] : bestMatch.name,
         scientificName: bestMatch.name,
@@ -54,7 +74,6 @@ export class PlantIdService {
           light: "Specific consultation recommended.",
           water: "Specific consultation recommended."
         },
-        // Note: Marked as toxic by default to protect your pet until verified.
         isToxicToPets: true 
       });
 
