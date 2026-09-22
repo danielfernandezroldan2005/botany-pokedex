@@ -16,11 +16,14 @@ function App() {
 
   // State to store the history (Read from phone memory if it exists).
   const [pokedexHistory, setPokedexHistory] = useState(() => {
-    const savedData = localStorage.getItem('myLocalPokedex');
-    if (savedData) {
-      return JSON.parse(savedData); // Reload save data.
+    try {
+      const savedData = localStorage.getItem('miPokedexLocal');
+      // Parse existing data or create a new array.
+      return savedData ? JSON.parse(savedData) : [];
+    } catch (error) {
+      console.warn("Local history could not be read. Initializing new array.", error);
+      return []; // If there is any error, for not to fail all the app.
     }
-    return []; // Start with empty array.
   });
 
   // --- REFS ---
