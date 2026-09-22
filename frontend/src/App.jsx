@@ -61,7 +61,7 @@ function App() {
     formData.append('plantImage', selectedFile);
 
     // --- TEMPORARY MOCK FOR UI DEVELOPMENT ---
-    setTimeout(() => {
+    /* setTimeout(() => {
       const newPlant = {
         id: Date.now(), // Added date as id.
         commonName: "Monstera (Simulated)",
@@ -84,10 +84,10 @@ function App() {
       setPokedexHistory((prevHistory) => [newPlant, ...prevHistory]);
       
       setIsLoading(false);
-    }, 1500);
+    }, 1500); */
 
     // --- REAL NETWORK CALL ---
-    /* try {
+    try {
       // Send POST request carrying the binary formData.
       const response = await fetch('http://localhost:3000/api/v1/plants/identify', {
         method: 'POST',
@@ -104,15 +104,28 @@ function App() {
       if (!response.ok) {
         throw new Error(data.error?.message || 'Failed to identify the plant specimen.');
       }
+
+      // If AI answer without any information.
+      if (!data.commonName || !data.scientificName) {
+         throw new Error('AI return incomplete data. Please retry again.');
+      }
+
       // Update the state with the validated botanical data.
       setPlantData (data);
+
+      // Add new plant to history using real data from AI.
+      const newPlantForHistory = {
+        ...data,
+        id: Date.now() 
+      };
+      setPokedexHistory((prevHistory) => [newPlantForHistory, ...prevHistory]);
     } catch (error) {
       console.error('[Network Error]: ', error);
       setErrorMessage('Could not complete identification. Check your connection or backend server.');
     } finally {
-      // Always restore the loading state to allow new submissions
+      // Always restore the loading state to allow new submissions.
       setIsLoading(false);
-    } */
+    }
   };
 
   // Handler to clear the current session and start over.
