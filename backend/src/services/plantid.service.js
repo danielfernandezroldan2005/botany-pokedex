@@ -64,7 +64,7 @@ export class PlantIdService {
 
       const details = bestMatch.details || {};
 
-      return JSON.stringify({
+      return {
         commonName: details.common_names ? details.common_names[0] : bestMatch.name,
         scientificName: bestMatch.name,
         family: details.taxonomy?.family || "Family not available",
@@ -75,7 +75,7 @@ export class PlantIdService {
           water: "Specific consultation recommended."
         },
         isToxicToPets: true 
-      });
+      };
 
     } catch (error) {
       console.error("[Plant.id V3] ❌ Connection failed:", error.message);
