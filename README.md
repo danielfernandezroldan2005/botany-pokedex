@@ -21,7 +21,7 @@
 
 Full-stack web application designed for real-time botanical identification and classification from images, inspired by the classic Pokédex concept.
 
-🔗 **Live Demo:** [https://tu-proyecto.vercel.app  ](https://botany-pokedex-frontend-op8sxjg9x-danielfernandezroldan2005.vercel.app/)
+🔗 **Live Demo:** [https://botany-pokedex.vercel.app  ](https://botany-pokedex-frontend-op8sxjg9x-danielfernandezroldan2005.vercel.app/)
 *(Note: Render free tier services spin down after inactivity. The first request may take 40-50 seconds to boot).*
 
 ### Features
@@ -64,7 +64,7 @@ Full-stack web application designed for real-time botanical identification and c
 
 Aplicación web Full-Stack diseñada para la identificación y clasificación botánica en tiempo real a partir de fotografías, inspirada en el concepto de una Pokédex.
 
-🔗 **Demo en vivo:** [https://tu-proyecto.vercel.app  ](https://botany-pokedex-frontend-op8sxjg9x-danielfernandezroldan2005.vercel.app/)
+🔗 **Demo en vivo:** [https://botany-pokedex.vercel.app  ](https://botany-pokedex-frontend-op8sxjg9x-danielfernandezroldan2005.vercel.app/)
 *(Nota: El servidor gratuito de Render entra en reposo tras inactividad. La primera petición puede tardar 40-50 segundos en responder).*
 
 ### Características
