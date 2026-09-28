@@ -1,10 +1,10 @@
 import { Router } from 'express';
 import { imageUploadMiddleware } from '../middlewares/upload.middleware.js';
 import { fileToGenerativePart } from '../utils/image.util.js';
-import { PlantIdService } from '../services/plantid.service.js';
+import { PlantNetService } from '../services/plantnet.service.js';
 
 export const plantRouter = Router();
-const aiService = new PlantIdService(); // Instantiate service
+const aiService = new PlantNetService();
 
 // POST endpoint to identify a plant from an uploaded image
 plantRouter.post('/identify', imageUploadMiddleware.single('plantImage'), async (request, response) => {
