@@ -113,7 +113,7 @@ class ApplicationServer {
 
   // Method for validating the environment variables of the class.
   validateEnvironment(){
-    const requiredVariables = ['PORT', 'ALLOWED_ORIGIN', 'GEMINI_API_KEY'];
+    const requiredVariables = ['PORT', 'ALLOWED_ORIGIN', 'PLANTNET_API_KEY'];
 
     // Filter and collect names of variables that fail validation
     const missingVariables = requiredVariables.filter((variableName) => {
