@@ -4,6 +4,18 @@
 
 ---
 
+# Images | Imágenes:
+- Presentation | Presentación:
+  <img width="1496" height="552" alt="imagen" src="https://github.com/user-attachments/assets/5c9c5ed6-e8b5-4d3b-8229-33b189c66805" />
+
+- Description | Descripción:
+  <img width="2178" height="1340" alt="imagen" src="https://github.com/user-attachments/assets/1b342928-71cf-467f-966f-84c96aeb5937" />
+
+- History | Historial:
+  <img width="1714" height="524" alt="imagen" src="https://github.com/user-attachments/assets/cc5f396c-927b-400d-9950-a033f531fae9" />
+
+---
+
 <a name="english"></a>
 ## English
 
