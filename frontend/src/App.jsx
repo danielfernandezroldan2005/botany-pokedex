@@ -6,6 +6,7 @@ function App() {
   const [plantData, setPlantData] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState(null);
+  const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000';
 
   // Read local storage history
   const [pokedexHistory, setPokedexHistory] = useState(() => {
@@ -43,7 +44,7 @@ function App() {
     formData.append('plantImage', selectedFile);
 
     try {
-      const response = await fetch('http://localhost:3000/api/v1/plants/identify', {
+      const response = await fetch(`${API_URL}/api/v1/plants/identify`, {
         method: 'POST',
         body: formData,
       });
