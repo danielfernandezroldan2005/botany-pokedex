@@ -32,4 +32,22 @@ export default function ScannerDropZone ({onScan, isLoading}) {
         const objectUrl = URL.createObjectURL(file);
         setPreviewURL(objectUrl);
     };
+
+    // Function to clear URL.
+    const handleClear = () => {
+        // Free memory created in the browser.
+        if (previewURL) {
+            URL.revokeObjectURL(previewURL);
+        }
+
+        // Clear local states.
+        setSelectedFile(null);
+        setPreviewURL(null);
+
+        // Clean native input value for giving the possibility to choose the same image.
+        if (fileInputRef.current) fileInputRef.current.value = '';
+        if (cameraInputRef.current) cameraInputRef.current.value = '';
+    };
+
+
 }
