@@ -53,4 +53,9 @@ export default function ScannerDropZone ({onScan, isLoading}) {
         e.preventDefault();
         setIsDragging(true);
     }
+
+    const handleDragLeave = () => {
+        setIsDragging(false);
+    }
+
 }
