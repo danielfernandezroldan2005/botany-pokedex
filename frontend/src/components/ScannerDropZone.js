@@ -33,7 +33,7 @@ export default function ScannerDropZone ({onScan, isLoading}) {
         setPreviewURL(objectUrl);
     };
 
-    // Function to clear URL.
+    // Function to clean the selection.
     const handleClear = () => {
         // Free memory created in the browser.
         if (previewURL) {
@@ -49,5 +49,8 @@ export default function ScannerDropZone ({onScan, isLoading}) {
         if (cameraInputRef.current) cameraInputRef.current.value = '';
     };
 
-
+    const handleDragOver = (e) => {
+        e.preventDefault();
+        setIsDragging(true);
+    }
 }
