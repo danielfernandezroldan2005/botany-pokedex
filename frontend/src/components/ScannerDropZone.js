@@ -58,4 +58,13 @@ export default function ScannerDropZone ({onScan, isLoading}) {
         setIsDragging(false);
     }
 
+    const handleDrop = (e) => {
+        e.preventDefault();
+        setIsDragging(false);
+        const file = e.dataTransfer.files[0];
+
+        if (file) {
+            handleFileChange(file);
+        }
+    }
 }
