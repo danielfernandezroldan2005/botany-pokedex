@@ -1,0 +1,5 @@
+# Local Configuration from Intellij.
+.idea/
+*.iml
+*.iws
+*.ipr
