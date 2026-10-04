@@ -49,6 +49,8 @@ export default function ScannerDropZone ({onScan, isLoading}) {
         if (cameraInputRef.current) cameraInputRef.current.value = '';
     };
 
+    // --- Drag and Drop Event Handlers ---
+    // Prevent default browser behavior and manage file capture via DataTransfer API.
     const handleDragOver = (e) => {
         e.preventDefault();
         setIsDragging(true);
@@ -67,4 +69,23 @@ export default function ScannerDropZone ({onScan, isLoading}) {
             handleFileChange(file);
         }
     }
+
+    // Trigger scan callback to parent component.
+    const handleSubmit = (e) => {
+        // Avoid browser reloading webpage.
+        e.preventDefault();
+
+        if (!selectedFile || isLoading) {
+            return;
+        }
+
+        onScan(selectedFile, selectedOrgan);
+    }
+
+    return (
+        <div>
+            {/* TODO: Implement JSX layout with Tailwind */}
+        </div>
+    );
+
 }
