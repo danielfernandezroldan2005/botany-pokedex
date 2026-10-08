@@ -85,9 +85,36 @@ export default function ScannerDropZone ({onScan, isLoading}) {
     return (
         <div className="w-full max-w-xl mx-auto bg-white rounded-3xl p-6 shadow-xl">
             <form onSubmit={handleSubmit} className="space-y-6">
-                <p className={"text-center text-slate-600 font-medium"}>
-                    Zona de escaneo de BotanyDex en construcción...
-                </p>
+                <div>
+                    <label className="block text-1xl font-bold uppercase tracking-wider text-slate-500 mb-3">
+                        Muestra Botánica
+                    </label>
+
+                    {/* Grid of buttons */}
+                    <div className="grid grid-cols-2 sm:grid-cols-5 gap-2">
+                        {ORGANS.map((organ) => {
+                            const Icon = organ.icon;
+                            const isSelected = selectedOrgan === organ.id;
+
+                            return (
+                                <button
+                                    className={`flex items-center justify-center gap-1.5 py-2 px-2.5 rounded-xl text-xs font-semibold border transition-all ${
+                                        isSelected
+                                            ? 'bg-emerald-600 text-white border-emerald-600 shadow-md shadow-emerald-600/20 scale-[1.02]'
+                                            : 'bg-slate-50 text-slate-700 border-slate-200 hover:border-emerald-400'
+                                    }`}
+                                    key={organ.id}
+                                    type="button"
+                                    onClick={() => setSelectedOrgan(organ.id)}
+                                >
+                                    {/* Icon and Text */}
+                                    <Icon className="w-3.5 h-3.5" />
+                                    <span>{organ.label}</span>
+                                </button>
+                            );
+                        })}
+                    </div>
+                </div>
             </form>
         </div>
     );

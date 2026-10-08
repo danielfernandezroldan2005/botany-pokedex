@@ -1,8 +1,8 @@
 import { useState, useRef, useEffect } from 'react';
+import ScannerDropZone from './components/ScannerDropZone.jsx';
 
 function App() {
   // State definitions
-  const [selectedFile, setSelectedFile] = useState(null);
   const [plantData, setPlantData] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState(null);
@@ -24,24 +24,25 @@ function App() {
     localStorage.setItem('miPokedexLocal', JSON.stringify(pokedexHistory));
   }, [pokedexHistory]);
 
-  const fileInputRef = useRef(null);
 
-  const handleFileChange = (event) => {
-    setSelectedFile(event.target.files[0]);
+  const handleReset = () => {
     setPlantData(null);
     setErrorMessage(null);
   };
 
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-    if (!selectedFile) return;
+  // Handle identification request from ScannerDropZone
+  const handleScan = async (file, organ) => {
+    if (!file) return;
 
     setIsLoading(true);
     setErrorMessage(null);
     setPlantData(null);
 
     const formData = new FormData();
-    formData.append('plantImage', selectedFile);
+    formData.append('plantImage', file);
+    if (organ && organ !== 'auto') {
+      formData.append('organ', organ);
+    }
 
     try {
       const response = await fetch(`${API_URL}/api/v1/plants/identify`, {
@@ -75,15 +76,6 @@ function App() {
     }
   };
 
-  const handleReset = () => {
-    setSelectedFile(null);
-    setPlantData(null);
-    setErrorMessage(null);
-    if (fileInputRef.current) {
-      fileInputRef.current.value = '';
-    }
-  };
-
   return (
     <div style={{ maxWidth: '500px', margin: '0 auto', padding: '2rem', fontFamily: 'sans-serif' }}>
       
@@ -93,45 +85,11 @@ function App() {
         <p style={{ color: '#666' }}>Tu asistente botánico para identificar plantas.</p>
       </header>
 
-      {/* FORM */}
-      <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-        <input 
-          type="file" 
-          accept="image/*" 
-          capture="environment"
-          onChange={handleFileChange} 
-          ref={fileInputRef}
-        />
-
-        {selectedFile && (
-          <div style={{ textAlign: 'center', margin: '1rem 0' }}>
-            <p style={{ fontSize: '0.8rem', color: '#666', marginBottom: '0.5rem' }}>
-              Muestra seleccionada:
-            </p>
-            <img 
-              src={URL.createObjectURL(selectedFile)}
-              alt="Muestra de planta"
-              style={{ width: '100%', maxHeight: '300px', objectFit: 'cover', borderRadius: '8px' }}
-            />
-          </div>
-        )}
-        
-        <button 
-          type="submit" 
-          disabled={!selectedFile || isLoading}
-          style={{ 
-            padding: '0.8rem', 
-            backgroundColor: '#2e7d32', 
-            color: '#fff', 
-            border: 'none', 
-            borderRadius: '8px',
-            cursor: (!selectedFile || isLoading) ? 'not-allowed' : 'pointer',
-            opacity: (!selectedFile || isLoading) ? 0.6 : 1
-          }}
-        >
-          {isLoading ? 'Analizando espécimen...' : 'Identificar Planta'}        
-        </button>
-      </form>
+      {/* SCANNER COMPONENT */}
+      <ScannerDropZone
+          onScan={handleScan}
+          isLoading={isLoading}
+      />
 
       {/* ERROR MESSAGE */}
       {errorMessage && (
