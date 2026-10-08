@@ -83,8 +83,12 @@ export default function ScannerDropZone ({onScan, isLoading}) {
     }
 
     return (
-        <div>
-            {/* TODO: Implement JSX layout with Tailwind */}
+        <div className="w-full max-w-xl mx-auto bg-white rounded-3xl p-6 shadow-xl">
+            <form onSubmit={handleSubmit} className="space-y-6">
+                <p className={"text-center text-slate-600 font-medium"}>
+                    Zona de escaneo de BotanyDex en construcción...
+                </p>
+            </form>
         </div>
     );
 
