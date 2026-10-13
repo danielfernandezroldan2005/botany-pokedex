@@ -82,7 +82,7 @@ Full-stack web application designed for real-time botanical identification, orga
 
 Aplicación web Full-Stack diseñada para la identificación botánica en tiempo real, segmentación por órganos y consulta de pautas de cuidado, inspirada en la dinámica de una Pokédex.
 
-🔗 **Demo en vivo:** [https://botany-pokedex-frontend-op8sxjg9x-danielfernandezroldan2005.vercel.app/](https://botany-pokedex-frontend-op8sxjg9x-danielfernandezroldan2005.vercel.app/)  
+🔗 **Demo en vivo:** [https://botany-pokedex-frontend-op8sxjg9x-danielfernandezroldan2005.vercel.app/](https://botany-dex.vercel.app))  
 *(Nota: El plan gratuito de Render entra en reposo por inactividad. La primera petición puede demorarse 40–50 segundos).*
 
 ### Características
