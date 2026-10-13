@@ -51,24 +51,31 @@ export default function ScannerDropZone ({onScan, isLoading}) {
 
     // --- Drag and Drop Event Handlers ---
     // Prevent default browser behavior and manage file capture via DataTransfer API.
+    // File over the box.
     const handleDragOver = (e) => {
         e.preventDefault();
+        e.stopPropagation();
         setIsDragging(true);
-    }
+    };
 
-    const handleDragLeave = () => {
+    // Mouse out of the box without releasing.
+    const handleDragLeave = (e) => {
+        e.preventDefault();
+        e.stopPropagation();
         setIsDragging(false);
-    }
+    };
 
+    // File dropped in the box.
     const handleDrop = (e) => {
         e.preventDefault();
+        e.stopPropagation();
         setIsDragging(false);
-        const file = e.dataTransfer.files[0];
 
-        if (file) {
-            handleFileChange(file);
+        const file = e.dataTransfer.files?.[0];
+        if (file && file.type.startsWith('image/')) {
+            setSelectedFile(file);
         }
-    }
+    };
 
     // Trigger scan callback to parent component.
     const handleSubmit = (e) => {
@@ -81,6 +88,15 @@ export default function ScannerDropZone ({onScan, isLoading}) {
 
         onScan(selectedFile, selectedOrgan);
     }
+
+    const handleFileInputChange = (e) => {
+        const file = e.target.files?.[0];
+        if (file) {
+            setSelectedFile(file);
+        }
+        // Reset input in the case the same image is selected.
+        e.target.value = '';
+    };
 
     return (
         <div className="w-full max-w-xl mx-auto bg-white rounded-3xl p-6 shadow-xl">
@@ -114,6 +130,27 @@ export default function ScannerDropZone ({onScan, isLoading}) {
                             );
                         })}
                     </div>
+                </div>
+                <input
+                    ref={fileInputRef}
+                    type="file"
+                    accept="image/*"
+                    capture="environment"
+                    className="hidden"
+                    onChange={handleFileInputChange}
+                />
+                <div
+                    onClick={() => fileInputRef.current?.click()}
+                    onDragOver={handleDragOver}
+                    onDragLeave={handleDragLeave}
+                    onDrop={handleDrop}
+                    className={`relative border-2 border-dashed rounded-2xl p-6 text-center cursor-pointer transition-all ${
+                        isDragging
+                            ? 'border-emerald-500 bg-emerald-50/50'
+                            : 'border-slate-300 hover:border-emerald-400 bg-slate-50/50'
+                    }`}
+                >
+                    {/* Aquí dentro mostraremos la vista previa o el mensaje de subida */}
                 </div>
             </form>
         </div>
