@@ -150,7 +150,15 @@ export default function ScannerDropZone ({onScan, isLoading}) {
                             : 'border-slate-300 hover:border-emerald-400 bg-slate-50/50'
                     }`}
                 >
-                    {/* Aquí dentro mostraremos la vista previa o el mensaje de subida */}
+                    {
+                        {selectedFile ? (
+                                <p className="text-sm text-slate-500">Foto lista (pendiente de estilizar)</p>
+                            ) : (
+                                <div>
+                                    {/* Aquí irá el contenido cuando NO hay foto */}
+                                </div>
+                            )}
+                    }
                 </div>
             </form>
         </div>
