@@ -6,13 +6,13 @@
 
 ## Gallery | Galería
 - **Scanner & Upload | Escáner y Carga:**
-  <img width="1496" height="552" alt="BotanyDex Scanner" src="https://github.com/user-attachments/assets/5c9c5ed6-e8b5-4d3b-8229-33b189c66805" />
+  <img width="1290" height="1340" alt="imagen" src="https://github.com/user-attachments/assets/122c0b48-005f-48f9-95b4-c716c7d34dd9" />
 
 - **Botanical Profile & Care Guide | Ficha Técnica y Cuidados:**
-  <img width="2178" height="1340" alt="BotanyDex Profile" src="https://github.com/user-attachments/assets/1b342928-71cf-467f-966f-84c96aeb5937" />
+  <img width="1360" height="1406" alt="imagen" src="https://github.com/user-attachments/assets/451e30d7-71be-4f4a-b18c-e6e4e7a813a5" />
 
 - **Interactive Specimen Collection | Historial Interactivo de Especímenes:**
-  <img width="1714" height="524" alt="BotanyDex History" src="https://github.com/user-attachments/assets/cc5f396c-927b-400d-9950-a033f531fae9" />
+  <img width="940" height="480" alt="imagen" src="https://github.com/user-attachments/assets/1ba8f29e-6e21-4cbe-9c20-fbcffc2b3176" />
 
 ---
 
