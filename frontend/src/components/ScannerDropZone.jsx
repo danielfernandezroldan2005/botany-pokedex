@@ -1,4 +1,4 @@
-import {useState, useRef} from "react";
+import {useState, useRef, useEffect} from "react";
 import { Leaf, Flower, Apple, Trees, Sparkles } from 'lucide-react';
 
 export default function ScannerDropZone ({onScan, isLoading}) {
@@ -17,6 +17,19 @@ export default function ScannerDropZone ({onScan, isLoading}) {
         { id: 'fruit', label: 'Fruto', icon: Apple },
         { id: 'bark', label: 'Corteza', icon: Trees },
     ];
+
+    // Avoid memory leaks (fugas de memoria).
+    useEffect(() => {
+        if (!selectedFile) {
+            setPreviewURL(null);
+            return;
+        }
+
+        const objectURL = URL.createObjectURL(selectedFile);
+        setPreviewURL(objectURL);
+
+        return () => URL.revokeObjectURL(objectURL);
+    }, [selectedFile]);
 
     // Function to handle the file change.
     const handleFileChange = (file) => {
@@ -78,16 +91,22 @@ export default function ScannerDropZone ({onScan, isLoading}) {
     };
 
     // Trigger scan callback to parent component.
-    const handleSubmit = (e) => {
-        // Avoid browser reloading webpage.
-        e.preventDefault();
+    const handleSubmit = (event) => {
+        event.preventDefault();
+        if (!selectedFile || isLoading) return;
 
-        if (!selectedFile || isLoading) {
-            return;
+        // 1. Dispatch scan request to the parent component
+        onScan({ file: selectedFile, organ: selectedOrgan });
+
+        // 2. Clear local file and preview state
+        setSelectedFile(null);
+        setPreviewURL(null);
+
+        // 3. Reset the hidden file input element if referenced
+        if (fileInputRef?.current) {
+            fileInputRef.current.value = '';
         }
-
-        onScan(selectedFile, selectedOrgan);
-    }
+    };
 
     const handleFileInputChange = (e) => {
         const file = e.target.files?.[0];
@@ -96,6 +115,13 @@ export default function ScannerDropZone ({onScan, isLoading}) {
         }
         // Reset input in the case the same image is selected.
         e.target.value = '';
+    };
+
+    // Remove selected image.
+    const handleRemoveImage = (e) => {
+        e.stopPropagation(); // Avoid re-open files selector with clic.
+        setSelectedFile(null);
+        setPreviewURL(null);
     };
 
     return (
@@ -151,7 +177,33 @@ export default function ScannerDropZone ({onScan, isLoading}) {
                     }`}
                 >
                     {selectedFile ? (
-                            <p className="text-sm text-slate-500">Foto lista (pendiente de estilizar)</p>
+                            <div className="relative w-full max-h-72 rounded-xl overflow-hidden bg-slate-900/5 flex items-center justify-center">
+                                <img
+                                    src={previewURL}
+                                    alt="Muestra seleccionada"
+                                    className="w-full h-full max-h-72 object-contain rounded-xl"
+                                />
+                                    {<button
+                                        type="button"
+                                        onClick={handleRemoveImage}
+                                        className="absolute top-2 right-2 p-1.5 bg-slate-900/70 hover:bg-slate-900 text-white rounded-full transition-all shadow-md"
+                                        title="Eliminar foto"
+                                    >
+                                        <svg
+                                            className="w-4 h-4"
+                                            fill="none"
+                                            stroke="currentColor"
+                                            viewBox="0 0 24 24"
+                                        >
+                                            <path
+                                                strokeLinecap="round"
+                                                strokeLinejoin="round"
+                                                strokeWidth="2"
+                                                d="M6 18L18 6M6 6l12 12"
+                                            />
+                                        </svg>
+                                    </button>}
+                            </div>
                         ) : (
                             <div>
                                 {<div className="flex flex-col items-center justify-center py-6 text-slate-500">
@@ -188,6 +240,32 @@ export default function ScannerDropZone ({onScan, isLoading}) {
                             </div>
                         )}
                 </div>
+                <button
+                    type="submit"
+                    disabled={!selectedFile || isLoading}
+                    className={`w-full mt-4 py-3 px-4 rounded-xl font-semibold text-sm flex items-center justify-center gap-2 transition-all shadow-md ${
+                        !selectedFile || isLoading
+                            ? 'bg-slate-200 text-slate-400 cursor-not-allowed shadow-none'
+                            : 'bg-emerald-600 hover:bg-emerald-500 text-white shadow-emerald-600/25 active:scale-[0.99]'
+                    }`}
+                >
+                    {isLoading ? (
+                        <>
+                            <svg className="animate-spin h-4 w-4 text-white" viewBox="0 0 24 24" fill="none">
+                                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"></path>
+                            </svg>
+                            <span>Identificando espécimen...</span>
+                        </>
+                    ) : (
+                        <>
+                            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                            </svg>
+                            <span>Identificar planta</span>
+                        </>
+                    )}
+                </button>
             </form>
         </div>
     );
